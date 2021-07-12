@@ -443,7 +443,7 @@ Construimos ahora un histograma para cada marcador, en el cual se muestra primer
 
 ```R
 # Construcción de histogramas
-par(mfrow=c(1,2))
+par(mfrow=c(4,4))
 for(i in 1:dim(muestraCocientes)[2]){
   marcador <- colnames(muestraCocientes)[i]  
   hist(muestraCocientes[,i],col=i,las=1, xlab='', breaks=20,
@@ -454,9 +454,23 @@ for(i in 1:dim(muestraCocientes)[2]){
   <img src="marcadores.png" />
 </p>
 
+Finalmente, imprimimos la tabla con los cocientes promedio para cada uno de los marcadores elegidos (más probables o comunes).
+
+```R
+tablaCocientes
+
+#          marcador.away
+#marcador.home      0         1         2         3           
+#         0 0.9542136 1.0200379 0.9249799 1.4585520 
+#         1 1.0065278 1.0311455 0.9845862 0.9891774 
+#         2 0.9352090 1.0344093 1.0849736 0.7852945 
+#         3 1.1330502 0.8506767 1.0300172 0.9982570
+```
+
+
 __Conclusión__
 
-Nos parece razonable asumir que a menor cantidad de goles, existe una mayor independencia.
+Dados los histogramas y las medias por casilla para los marcadores, nos parece razonable asumir que para los marcadores más comunes, existe una mayor independencia o evidencia para decir que las variables aletorias que describen el número de goles (local y visitantes), son independientes.
 
 # Postwork 05 Regresión lineal y clasificación
 
