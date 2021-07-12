@@ -259,7 +259,7 @@ probVisitantePlot
   <img src="Sesion3_plot2.png" />
 </p>
 
-Para la probabilidad conjunta, en donde interactuan dos variables, goles de locales y goles de visitantes, obtamos por un mapa de calor para ilustrar los resultados. Por medio de un mapa de color podemos determinar los disntintos valores de probabilidad obtenidos dependiendo de la tonalidad que adquieran, permitiendo un análisis visual sencillo.
+Para la probabilidad conjunta, en donde interactuan dos variables, goles de locales y goles de visitantes, obtamos por un mapa de calor para ilustrar los resultados. Por medio de un mapa de color podemos determinar los disntintos valores de probabilidad obtenidos dependiendo de la tonalidad que adquieran, permitiendo un análisis visual sencillo y rápido de los resultados.
 
 ```R
 install.packages("reshape2")
@@ -379,6 +379,11 @@ bootstrap <- replicate(n=10000, sample(probdf$cociente, replace=TRUE))
 dim(bootstrap) ##Obtenemos el remuestreo en cada nueva columna
 ```
 
+**Nota.** -Bootstrap es un método de remuestreo propuesto por Bradley Efron en 1979 que se aplica en situaciones en donde la muestra de datos disponible es muy pequeña. A través de la generación de nuevas muestras basadas en la original, se aumenta la cantidad de datos e información con la que trabajar, de esta manera calculando las medias de cada muestra se puede determinar la distribución de los datos de manera gráfica.
+
+En este caso para implementar el método de boostrap en `R` se utilizó la función `sample()`, la cual dandole una muestra de datos, genera una “nueva muestra” basada en la original, y como el boostrap necesita una mayor cantidad de muestras, utilizando la función `replicate()` determinamos cuantas veces se tendrá que ejecutar la función `sample` generando en cada repetición más muestras.
+
+
 Obtenemos las medias de cada uno de los remuestreos
 
 ```R
@@ -495,7 +500,7 @@ serie <- match.data %>% mutate(anio_mes = substr(date, 1, 7)) %>%
   group_by(anio_mes) %>% summarize(goles_prom = mean(sumagoles))
 ```
 
-En seguida construimos la serie de tiempo del promedio por mes de la suma de goles hasta diciembre de 2019 y se graficó la serie de tiempo correspondiente.
+En seguida construimos la serie de tiempo (Una serie de tiempo son datos estadísticos que se recopilan, observan o registran en intervalos de tiempo regulares [diario, semanal, semestral, anual, etc]) del promedio por mes de la suma de goles hasta diciembre de 2019 y se graficó la serie de tiempo correspondiente.
 
 
 ```R
