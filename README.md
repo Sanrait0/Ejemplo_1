@@ -13,7 +13,7 @@ homeGoals <- futbolData$FTHG  #Goles anotados por los equipos que jugaron en cas
 awayGoals <- futbolData$FTAG  #Goles anotados por los equipos que jugaron como visitante
 ```
 
-Utilizando la función `table()`, por medio de clasificación cruzada construimos una “tabla de contigencia”, la cual determina en **cuántas ocasiones** de las distintas anotaciones realizadas (0,1,2,…), se tuvo el mismo resultado, **es decir, en cuántos encuentros el marcador** fue 0, 1, 2, y así
+Utilizando la función `table()`, por medio de clasificación cruzada construimos una “tabla de contigencia”, la cual determina en **cuántas ocasiones** de las distintas anotaciones realizadas (0,1,2,…), se tuvo el mismo resultado, es decir, en cuántos encuentros el marcador fue 0, 1, 2, y así
 sucesivamente.
 
 ```R
@@ -24,8 +24,8 @@ table(homeGoals)
 #88 132  99  38  14   8   1 
 ```
 
-Con las tablas de contigencias obtenidas para las anotaciones de los equipos locales y los equipos visitantes, **calculamos la probabilidad marginal en cada caso, al dividirlas entre el total de partidos que se jugaron. La probabilidad simple o marginal se refiere a la probabilidad de ocurrencia de un suceso.
-Matemáticamente, si <img src="https://latex.codecogs.com/svg.latex?\small&space;X"/> es la variable aleatoria que cuenta el número de goles anotados (ya sea local o visitante), esta probabilidad la calculamos como:**
+Con las tablas de contigencias obtenidas para las anotaciones de los equipos locales y los equipos visitantes, calculamos la probabilidad marginal en cada caso, al dividirlas entre el total de partidos que se jugaron. La probabilidad simple o marginal se refiere a la probabilidad de ocurrencia de un suceso.
+Matemáticamente, si <img src="https://latex.codecogs.com/svg.latex?\small&space;X"/> es la variable aleatoria que cuenta el número de goles anotados (ya sea local o visitante), esta probabilidad la calculamos como:
 
 <p align="center">
   <img src="https://latex.codecogs.com/svg.latex?\small&space;P(X=n)=\frac{\textrm{Partidos\hspace{.1cm}con\hspace{.1cm}marcador\hspace{.1cm}igual\hspace{.1cm}a\hspace{.1cm}n}}{\textrm{Partidos\hspace{.1cm}totales}}"/>
@@ -54,7 +54,7 @@ table(homeGoals, awayGoals) # Tabla conjunta
 
 ```
 
-**Dividimos entre la cantidad de casos para obtener la probabilidad conjunta. En este caso, si <img src="https://latex.codecogs.com/svg.latex?\small&space;X"/> es la variable aleatoria que denota el marcador local y <img src="https://latex.codecogs.com/svg.latex?\small&space;Y"/> el marcador visitante, el cálculo de tales probabilidades viene dado por:**
+Dividimos entre la cantidad de casos para obtener la probabilidad conjunta. En este caso, si <img src="https://latex.codecogs.com/svg.latex?\small&space;X"/> es la variable aleatoria que denota el marcador local y <img src="https://latex.codecogs.com/svg.latex?\small&space;Y"/> el marcador visitante, el cálculo de tales probabilidades viene dado por:
 
 <p align="center">
   <img src="https://latex.codecogs.com/svg.latex?\small&space;P(X=n;Y=m)=\frac{\textrm{Partidos\hspace{.1cm}cuyo\hspace{.1cm}marcador\hspace{.1cm}fue\hspace{.1cm}n-m\hspace{.1cm}}}{\textrm{Partidos\hspace{.1cm}totales}}"/>
@@ -106,7 +106,7 @@ Leemos cada uno de los `.csv` y los almacenamos en una lista `ligaEsp` en R para
 ```R
 ligaEsp <- lapply(dir(), read.csv)
 ```
-**Para garantizar que únicamente se lean los archivos con terminación `.csv` en  `dir()`, podemos hacer:**
+Para garantizar que únicamente se lean los archivos con terminación `.csv` en  `dir()`, podemos hacer:
 
 ```R
 ligaEsp <- lapply(list.files(pattern ="*.csv"), read.csv)
@@ -142,7 +142,7 @@ ligaEsp[[3]] <- mutate(ligaEsp[[3]], Date = as.Date(Date, "%d/%m/%Y"))
 str(ligaEsp)
 View(ligaEsp[[1]]); View(ligaEsp[[2]]); View(ligaEsp[[3]])
 ```
-Por último unimos los tres dataframes en uno solo. Con el comando ``do.call()`` combinamos todos los datos en un solo dataframe. Utilizando el argumento ``rbind`` indicamos que cada dataframe individual de la lista se una en un nuevo **renglón** al finalizar anterior. 
+Por último unimos los tres dataframes en uno solo. Con el comando ``do.call()`` combinamos todos los datos en un solo dataframe. Utilizando el argumento ``rbind`` indicamos que cada dataframe individual de la lista se una en un nuevo renglón al finalizar anterior. 
 
 Y nuevamente observamos la estructura de nuestros datos. 
 
@@ -164,14 +164,14 @@ write.csv(data, "dataPostwork2.csv", row.names = FALSE)
 
 # Postwork 03 Análisis Exploratorio de Datos con R
 
-**Cargamos el dataframe obtenido en el [Postwork 02](https://github.com/edsatan/Proyecto-R/tree/main/Postwork-02) y modificamos el formato de las fechas (utilizando el comando `mutate()`) para facilitar más adelante su manipulación.**
+Cargamos el dataframe obtenido en el [Postwork 02](https://github.com/edsatan/Proyecto-R/tree/main/Postwork-02) y modificamos el formato de las fechas (utilizando el comando `mutate()`) para facilitar más adelante su manipulación.
  ```R
 data <- read.csv("https://raw.githubusercontent.com/edsatan/Proyecto-R/main/Postwork-02/dataPostwork2.csv")
 
 data <- mutate(data, Date = as.Date(Date, "%Y-%m-%d"))
 ```
 
-**Seleccionamos nuestras columnas de interés (Goles de casa `FTHG` y goles de visitante `FTAG`) para realizar el cálculo de las probabilidades marginales y conjunta como en el [Postwork 01](https://github.com/edsatan/Proyecto-R/tree/main/Postwork-01)**
+Seleccionamos nuestras columnas de interés (Goles de casa `FTHG` y goles de visitante `FTAG`) para realizar el cálculo de las probabilidades marginales y conjunta como en el [Postwork 01](https://github.com/edsatan/Proyecto-R/tree/main/Postwork-01)
 
 ```R
 homeGoals2 <- data$FTHG
@@ -228,7 +228,7 @@ Para entender mejor los resultados de las operaciones realizadas, desplegaremos 
 library(ggplot2)
 ```
 
-Para el caso de las probabilidades marginales, se optó por utilizar un gráfico de barras, **permitiéndonos observar la distribución y comportamiento de las distintas probabilidades de una manera más rápida y sencilla.**
+Para el caso de las probabilidades marginales, se optó por utilizar un gráfico de barras, permitiéndonos observar la distribución y comportamiento de las distintas probabilidades de una manera más rápida y sencilla.
 
 ```R
 probCasaPlot <- ggplot() + 
@@ -259,7 +259,7 @@ probVisitantePlot
   <img src="Sesion3_plot2.png" />
 </p>
 
-Para la probabilidad conjunta, en donde interactuan dos variables, goles de locales y goles de visitantes, obtamos por un mapa de calor para ilustrar los resultados. Por medio de un mapa de color podemos determinar los disntintos valores de probabilidad obtenidos dependiendo de la tonalidad que adquieran, **permitiendo un análisis visual sencillo y rápido de los resultados.**
+Para la probabilidad conjunta, en donde interactuan dos variables, goles de locales y goles de visitantes, obtamos por un mapa de calor para ilustrar los resultados. Por medio de un mapa de color podemos determinar los disntintos valores de probabilidad obtenidos dependiendo de la tonalidad que adquieran, permitiendo un análisis visual sencillo y rápido de los resultados.
 
 ```R
 install.packages("reshape2")
@@ -291,7 +291,7 @@ homeGoals2 <- data$FTHG
 awayGoals2 <- data$FTAG
 ``` 
 
-**El objetivo es obtener una tabla de cocientes al dividir estas probabilidades conjuntas por el producto de las probabilidades marginales correspondientes. Creamos un Dataframe con la probabilidad conjunta.**
+El objetivo es obtener una tabla de cocientes al dividir estas probabilidades conjuntas por el producto de las probabilidades marginales correspondientes. Creamos un Dataframe con la probabilidad conjunta.
 
 ```R
 probdf <- as.data.frame(table(homeGoals2, awayGoals2)/length(homeGoals2))
@@ -357,19 +357,19 @@ tablaCocientesPlot
   <img src="cocientes.png" />
 </p>
 
-**Internamente, lo que se está haciendo es observar de manera empírica si es objetivo asumir que los goles de local y de visitante, al ser vistos como variables aletorias, son independientes. En estadística, dos variables aleatorias <img src="https://latex.codecogs.com/svg.latex?\small&space;X"/> y <img src="https://latex.codecogs.com/svg.latex?\small&space;Y"/> se dicen independientes si la distribución conjunta de estas es igual al producto de las distribuciones marginales, esto es:**
+Internamente, lo que se está haciendo es observar de manera empírica si es objetivo asumir que los goles de local y de visitante, al ser vistos como variables aletorias, son independientes. En estadística, dos variables aleatorias <img src="https://latex.codecogs.com/svg.latex?\small&space;X"/> y <img src="https://latex.codecogs.com/svg.latex?\small&space;Y"/> se dicen independientes si la distribución conjunta de estas es igual al producto de las distribuciones marginales, esto es:
 
 <p align="center">
   <img src="https://latex.codecogs.com/svg.latex?\small&space;f(x,y)=f(x)f(y)"/>
  </p>
 
-**Lo que es lo mismo que decir:**
+Lo que es lo mismo que decir:
 
 <p align="center">
   <img src="https://latex.codecogs.com/svg.latex?\small&space;\frac{f(x,y)}{f(x)f(y)}=1"/>
  </p>
 
-**Como ya contamos con estimaciones para la distribución conjunta, así como para las marginales correspondientes, una manera de verificar la hipótesis de independencia es mediante los cocientes de tales estimaciones, de ahí el procedimiento que hemos realizado en esta parte del proyecto.**
+Como ya contamos con estimaciones para la distribución conjunta, así como para las marginales correspondientes, una manera de verificar la hipótesis de independencia es mediante los cocientes de tales estimaciones, de ahí el procedimiento que hemos realizado en esta parte del proyecto.
 
 Mediante un procedimiento de boostrap, obtnemos más cocientes similares a los obtenidos en la dataframe `probdf`. Aplicamos el remuestreo bootstrap
 
