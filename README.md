@@ -366,7 +366,7 @@ Internamente, lo que se está haciendo es observar de manera empírica si es obj
 Lo que es lo mismo que decir:
 
 <p align="center">
-  <img src="https://latex.codecogs.com/svg.latex?\small&space;1=\frac{X}{Y}"/>
+  <img src="https://latex.codecogs.com/svg.latex?\small&space;\frac{X}{Y}=1"/>
  </p>
 
 Como ya contamos con estimaciones para la distribución conjunta, así como para las marginales correspondientes, una manera de verificar la hipótesis de independencia es mediante los cocientes de tales estimaciones, de ahí el procedimiento que hemos realizado en esta parte del proyecto.
