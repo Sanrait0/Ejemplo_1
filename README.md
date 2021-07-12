@@ -397,3 +397,80 @@ mediasBSPlot
 __Conclusión__
 
 Nos parece razonable asumir que a menor cantidad de goles, existe una mayor independencia.
+
+# Postwork 05 Regresión lineal y clasificación
+
+Utilizando nuevamente DataFrame de datos de soccer de la liga española de las temporadas 2017-2018, 2018-2019 y 2019-2020 generado en el Prework 2, renombraremos sus columnas `Date`, `HomeTeam`, `FTHG`, `AwayTeam` y `FTAG`, por `date`, `home.team`, `home.score`, `away.team` y `away.score`, respectivamente. Lo anterior lo podemos hacer con ayuda de la función `select` del paquete `dplyr`. Con ayuda de la función `write.csv` guarda el data frame como un archivo `.csv` con nombre `soccer.csv`.
+
+```R
+library(dplyr)
+```
+
+Seleccionamos el directorio de trabajo con el comando `setwd(/ruta)`
+
+Carga de datos
+
+```R
+dataurl1819 <- "https://www.football-data.co.uk/mmz4281/1819/SP1.csv"
+dataurl1920 <- "https://www.football-data.co.uk/mmz4281/1920/SP1.csv"
+dataurl1718 <- "https://www.football-data.co.uk/mmz4281/1718/SP1.csv"
+
+download.file(dataurl1718, destfile = "dataurl1718.csv", mode = "wb")
+download.file(dataurl1819, destfile = "dataurl1819.csv", mode = "wb")
+download.file(dataurl1920, destfile = "dataurl1920.csv", mode = "wb")
+
+ligaEsp <- lapply(list.files(pattern ="*.csv"), read.csv)
+ligaEsp <- lapply(ligaEsp, select, Date, HomeTeam:FTAG)
+ligaEsp[[1]] <- mutate(ligaEsp[[1]], Date = as.Date(Date, "%d/%m/%y"))
+ligaEsp[[2]] <- mutate(ligaEsp[[2]], Date = as.Date(Date, "%d/%m/%Y"))
+ligaEsp[[3]] <- mutate(ligaEsp[[3]], Date = as.Date(Date, "%d/%m/%Y"))
+```
+
+Unión de los dataframes
+
+```R
+SmallData <- do.call(rbind, ligaEsp)
+```
+
+Renombramos las columnas
+
+```R
+SmallData <- rename(SmallData, date = Date, 
+                    home.team = HomeTeam, 
+                    home.score = FTHG,
+                    away.team = AwayTeam,
+                    away.score = FTAG)
+str(SmallData)
+head(SmallData)
+```
+
+Guardamos el archivo
+
+```R 
+write.csv(SmallData, "soccer.csv", row.names = FALSE)
+```
+
+Ahora utilizaremos la librería `fbRanks` con su función `create.fbRanks.dataframes()`, la cual requiere que tenga, en específico, el nombre de las columnas que se mencionó anteriormente. Con estos datos, la función nos genera dos listas, una con los nombres de los equipos y otra con los distintos resultados de los encuentros. Estos nuevos datos pueden ser asignados de manera directa a la función `rank.teams()` utilizando a su vez el modelo poisson ponderado en el tiempo de Dixon y Coles, el cual permite realizar predicciones del rendimiento de los equipos en los disintos encuentros. De esta manera logramos obtener mejores estadísticas de los encuentros de nuestro data frame.
+
+```R
+library(fbRanks)
+
+listasoccer <-create.fbRanks.dataframes("soccer.csv")
+anotaciones <-listasoccer$scores
+equipos <- listasoccer$teams
+```
+
+A continuación, con ayuda de la función `unique` creamos un vector de fechas (fecha) que no se repitan y que correspondan a las fechas en las que se jugaron partidos, además de guardar una variable (`n`) que contenga el número de fechas diferentes. Posteriormente, con la función `rank.teams` y usando como argumentos los dataframes `anotaciones` y `equipos`, creamos un ranking de equipos usando únicamente datos desde la fecha inicial y hasta la penúltima fecha en la que se jugaron partidos.
+
+```R
+fechas <- unique(anotaciones$date)
+n <- length(fechas)
+ranking <-rank.teams(anotaciones, equipos, max.date=fechas[n-1], min.date = fechas[1])
+``` 
+
+Finalmente, se estiman las probabilidades de los eventos, el equipo de casa gana, el equipo visitante gana o el resultado es un empate para los partidos que se
+jugaron en la última fecha del vector de fechas fecha.
+
+```R
+p <- predict(ranking, date = fechas[n])
+```
